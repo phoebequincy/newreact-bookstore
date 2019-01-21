@@ -1,28 +1,41 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
 import './App.css';
+import './components/BookList';
+import './components/Book';
+import './components/CartItem';
+import './components/CartTotal';
+import './components/Header';
+import './components/Search';
+
+state = {
+
+}
 
 class App extends Component {
-  render() {
-    return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </header>
-      </div>
-    );
-  }
-}
+      addItemToState = (quantity,productId)=> {
+
+        let productToAdd = this.state.products.find(product => product.id == parseInt(productId))
+        let newItem = {
+          id: this.state.cartItemsList.length + 1,
+          product: productToAdd,
+          quantity: quantity
+        }
+
+        this.setState({cartItemsList:[...this.state.cartItemsList, newItem] })
+      }
+        render() {
+
+          return (
+            <div className="App">
+              <Header />
+              <CartItems cartItemsList={this.state.cartItemsList}/>
+              <AddItem products={this.state.products} addItemToState={this.addItemToState}/>
+
+            </div>
+          );
+        }
+      }
+
+
 
 export default App;
