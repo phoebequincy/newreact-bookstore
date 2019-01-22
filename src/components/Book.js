@@ -1,29 +1,42 @@
-import React from 'react';
+import React, {Component} from 'react'
+
+export default class Book extends Component {
 
 
-const Book = (props) => {
-  console.log(props.id)
-  return (
-    <div className="list-group-item" key={props.id}>
-      <div className="row">
-        <div className="col-md-10 font-weight-bold">{props.title}: {props.subtitle}</div>
-          <div className="col-md-2">${props.price}</div>
+  addToCart = (e) => {
+  e.preventDefault()
+
+  {this.props.updateCart()}
+  }
+
+  render() {
+
+    const {
+      book,
+      addToCart,
+      book: {
+        title,
+        subtitle,
+        author,
+        description,
+        price,
+
+        }
+    } = this.props
+
+    return (
+      <li className="list-group-item">
+        <div className="card">
+          <div className="card-body">
+            <h5 className="card-title">{title}</h5>
+            <p>{subtitle}</p>
+            <p className="card-text">By:{author}</p>
+            <p className="card-text">{description}</p>
+            <p className="card-text">${(price).toFixed(2)} </p>
+            <button id="bookButton" value={title} onClick={(e)=>addToCart(e.target.value)} className="btn btn-info">Add to Cart</button>
+          </div>
         </div>
-      <div className="row">
-        <div className="col-md-12 font-italic">{props.author}</div>
-      </div>
-      <div className="row">
-        <div className="col-md-10">{props.description}</div>
-        <span className="span-2">
-          <button
-            className="btn btn-dark"
-            type="button"
-            onClick={(e) => props.addToCart(props.id)}
-          >Add to Cart</button>
-        </span>
-      </div>
-    </div>
-  )
+      </li>
+    )
+  }
 }
-
-export default Book

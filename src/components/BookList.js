@@ -1,15 +1,27 @@
-import React from 'react';
+import React, { Component } from 'react';
 import Book from './Book';
 
-const BookList = ({Book}) => {
+export default class BookList extends Component {
 
-  return (
-    <ul className="list-group">
-      <div>
+    render() {
 
-      </div>
-    </ul>
-  )
+      const {books, addToCart} = this.props
+
+        return (
+            <div className="book-list">
+              <h1>Book Store</h1>
+                <ul className="list-group">
+                {books.map(book => {
+                  return (
+                    <Book
+                      book = {book}
+                      key = {book.id}
+                      addToCart = {addToCart}
+                    />
+                  )
+                })}
+              </ul>
+          </div>
+        )
+    }
 }
-
-export default BookList

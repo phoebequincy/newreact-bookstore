@@ -1,17 +1,15 @@
 import React, { Component } from 'react';
 import Header from './components/Header';
-import Book from'./components/Book';
-import BookList from'./components/BookList';
-import Cart from'./components/Cart';
-import CartItem from'./components/CartItem.js';
-import CartTotal from './components/CartTotal';
-import Search from'./components/Search';
+import Book from './components/Book';
+import BookList from './components/BookList';
+import Cart from './components/Cart';
+import CartItem from './components/CartItem';
+
 
 class App extends Component {
 
     state = {
-    title: "",
-    book:[],
+    books:[],
     cart:[],
     }
 
@@ -19,41 +17,35 @@ class App extends Component {
   async componentDidMount() {
     const response = await fetch('http://localhost:8082/api/books')
     const json = await response.json()
-    this.setState({book: json} )
+    this.setState({
+      ...this.state,
+      books: json
+      //add more key/value pairs here
+    })
   }
 
 
-  renderBooks() {
-      return this.book.map((book, i) => {
-        return <Book {...book} key={i} addToCart={this.addToCart} />
-      })
-    }
-      //   addItemToState = (quantity,productId)=> {
-      //
-      //   let productToAdd = this.state.products.find(product => product.id == parseInt(productId))
-      //   let newItem = {
-      //     id: this.state.cartItemsList.length + 1,
-      //     product: productToAdd,
-      //     quantity: quantity
-      //   }
-      //
-      //   this.setState({cartItemsList:[...this.state.cartItemsList, newItem] })
-      // }
       render() {
           return (
               <div>
-                <Header title={this.state.title}/>
-                  <div className="container bg-info">
+                <Header />
+                  <div className="container bg-light">
                     <div className="row">
                       <div className="col-8">
-                <BookList title="Book List" books={this.state.books} addToCart={this.addToCart} renderBooks={this.renderBooks}/>
+                        <BookList
+                          books={this.state.books}
+                          addToCart={this.addToCart}
+                        />
+                      </div>
+                      <div className="col-4">
+                        <Cart
+                          cart={this.state.cart}
+                          removeFromCart={this.removeFromCart}
+                        />
+                      </div>
+                  </div>
                 </div>
-                  <div className="col-4">
-                    <Cart cart={this.state.cart} removeFromCart={this.removeFromCart}/>
             </div>
-          </div>
-        </div>
-      </div>
     );
   }
 }

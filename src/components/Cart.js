@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import CartItem from './CartItem';
-import CartTotal from './CartTotal';
+
 
 export default class Cart extends Component {
 
@@ -15,6 +15,9 @@ export default class Cart extends Component {
                 <div className="row">
                   <div className="col-md-8">Item</div>
                   <div className="col-md-2">Price</div>
+                  <div className="Total mt-2">
+                      <h4>Total: $       </h4>
+                 </div>
                 </div>
               </h5>
             </div>
