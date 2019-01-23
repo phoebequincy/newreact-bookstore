@@ -1,82 +1,105 @@
 import React, { Component } from 'react';
 import Header from './components/Header';
-import Book from './components/Book';
 import BookList from './components/BookList';
 import Cart from './components/Cart';
-import CartItem from './components/CartItem';
 
+const API = 'http://localhost:8082/api'
+
+const bodyStyle = {
+  paddingTop: "75px"
+}
 
 class App extends Component {
 
-    state = {
-      filterString: '',
-      books:[],
-      cart:[],
-    }
+  state = {
+    filterString: '',
+    books: [],
+    cart: []
+  }
 
   async componentDidMount() {
-    const response = await fetch('http://localhost:8082/api/books')
-    const json = await response.json()
-    this.setState({
-      ...this.state,
-      books: json,
-      cart: [],
-    })
+    const response = await fetch(`${API}/books`)
+
+    const booksJson = await response.json()
+    this.setState({books: booksJson})
 
     const cartState = this.state.books.filter(book => book.inCart === true)
+
     this.setState(this.state.cart = cartState)
   }
 
-  handleSearch = (e) => {
-      let newState = {...this.state}
-      newState.filterString = e.target.value.toLowerCase()
+  addToCart = async (bookId) => {
+    let bookToAdd = this.state.books.find(book => book.id === parseInt(bookId))
 
-      this.setState({filterString: newState.filterString})
+    await fetch(`${API}/books/cart/add/${bookToAdd.id}`, {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+      }
+    })
+
+    this.setState({cart: [...this.state.cart, bookToAdd]})
+
   }
 
-      render() {
+  handleSearch = (e) => {
+    let newState = {...this.state}
+    newState.filterString = e.target.value.toLowerCase()
 
-        const addToCart = (book)=> {
-          this.setState(
-          {
-            ...this.state,
-            cart: [...this.state.cart, book]
-          })
-        }
+    this.setState({ filterString : newState.filterString})
+  }
 
-        const cartTotal = () => {
-          return this.state.cart.reduce((accum, item) =>  {
-            return accum += item.price
-          },0)
-        }
+  total = () => {
+    let result = this.state.cart.reduce((result, book) => {
+      return Number(result) + Number(book.price)
+    }, 0)
+    return result
+  }
 
-        const newState = this.state.books.filter(book => book.inCart === true)
+  removeBook = async (bookId) => {
+    let newCart = this.state.cart.filter(book => (book.id !== bookId))
 
-          return (
-              <div>
-              <div>
-                <Header
-                handleSearch={this.handleSearch}
-                />
-              </div>
-                  <div className="container bg-light">
-                    <div className="row">
-                      <div className="col-8">
-                        <BookList
-                          books={this.state.books}
-                          addToCart={addToCart}
-                        />
-                      </div>
-                      <div className="col-4">
-                        <Cart
-                          cart={this.state.cart}
-                          cartTotal={cartTotal}
-                        />
-                      </div>
-                  </div>
-                </div>
-            </div>
-    );
+    await fetch(`${API}/books/cart/remove/${bookId}`, {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+      }
+    })
+
+    this.setState(this.state.cart = newCart)
+  }
+
+  render() {
+    return (
+      <div className="App container-fluid">
+        <div>
+          <Header
+          handleSearch={this.handleSearch}
+          />
+        </div>
+        <div className="row" style={bodyStyle}>
+
+          <div className="col-md-8">
+
+          <BookList
+            books={this.state.books}
+            filterString={this.state.filterString}
+            addToCart={this.addToCart}/>
+          </div>
+
+          <div className="col-md-4 border">
+
+          <Cart
+            cart={this.state.cart}
+            total={this.total}
+            removeBook={this.removeBook}
+          />
+          </div>
+        </div>
+      </div>
+    )
   }
 }
 

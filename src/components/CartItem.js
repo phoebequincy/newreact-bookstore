@@ -1,18 +1,28 @@
 import React from 'react';
 
 
-const CartItem = ({item}) => {
+const CartItems = ({title, bookId, author, price, removeBook}) => {
 
-  return (
-    <div className="row">
-      <div className="col-md-8">
-      {item.title}
+    return (
+      <div>
+        <li className="list-group-item">
+          <div className="row">
+            <div className="col-md-8">{title}</div>
+            <div className="col-md-4">
+              <button
+                className="btn btn-danger"
+                type="button"
+                onClick={(e) => removeBook(bookId)}>Delete</button>
+            </div>
+          </div>
+          <div className="row">
+            <div className="col-md-6">{author}</div>
+            <div className="col-md-2">${price}
+            </div>
+          </div>
+        </li>
       </div>
-      <div className="col-md-2">
-      ${item.price}.00
-      </div>
-    </div>
-  )
+    )
 }
 
-export default CartItem;
+export default CartItems

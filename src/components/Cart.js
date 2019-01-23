@@ -1,44 +1,30 @@
-import React, { Component } from 'react';
-import CartItem from './CartItem';
+import React from 'react'
+import CartItems from './CartItem'
 
-
-
-export default class Cart extends Component {
-
-  render(props){
-
-    const {cart, cartTotal} = this.props
-
+const Cart = ({cart, total, removeBook}) => {
 
     return (
       <div>
-          <h1>Cart</h1>
-          <div className="list-group">
-            <div className="list-group-item">
-              <h5>
-                <div className="row">
-                  <div className="col-md-8">
-                    Item
-                  </div>
-                  <div className="col-md-2">
-                    Price
-                  </div>
-                </div>
-                 {cart.map(item => {
-                  return (
-                    <CartItem
-                      item = {item}
-                      key = {item.id}
-                    />
-                  )
-                })}
-                <div className="Total mt-2">
-                    <h4>Total: $ {cartTotal()}  </h4>
-                </div>
-              </h5>
-            </div>
+        <h5>My Cart</h5>
+        <ul className="list-group">
+          {cart.map(({id, quantity, title, author, price}) =>
+          <CartItems
+            key={id}
+            title={title}
+            author={author}
+            price={price}
+            qty={quantity}
+            bookId={id}
+            removeBook={removeBook}
+          />)}
+        </ul>
+        <div>
+          <div className="row">
+            <div className="col-md-8">Total: ${total()}</div>
           </div>
         </div>
+      </div>
     )
-  }
 }
+
+export default Cart
