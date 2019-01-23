@@ -6,7 +6,7 @@ export default class Book extends Component {
   addToCart = (e) => {
   e.preventDefault()
 
-  {this.props.updateCart()}
+  
   }
 
   render() {
@@ -33,7 +33,7 @@ export default class Book extends Component {
             <p className="card-text">By:{author}</p>
             <p className="card-text">{description}</p>
             <p className="card-text">${(price).toFixed(2)} </p>
-            <button id="bookButton" value={title} onClick={(e)=>addToCart(e.target.value)} className="btn btn-info">Add to Cart</button>
+            <button id="bookButton" value={title} onClick={(e)=>addToCart(book)} className="btn btn-info">Add to Cart</button>
           </div>
         </div>
       </li>

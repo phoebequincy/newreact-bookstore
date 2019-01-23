@@ -9,38 +9,68 @@ import CartItem from './components/CartItem';
 class App extends Component {
 
     state = {
-    books:[],
-    cart:[],
+      filterString: '',
+      books:[],
+      cart:[],
     }
 
-// fetch data from an api
   async componentDidMount() {
     const response = await fetch('http://localhost:8082/api/books')
     const json = await response.json()
     this.setState({
       ...this.state,
-      books: json
-      //add more key/value pairs here
+      books: json,
+      cart: [],
     })
+
+    const cartState = this.state.books.filter(book => book.inCart === true)
+    this.setState(this.state.cart = cartState)
   }
 
+  handleSearch = (e) => {
+      let newState = {...this.state}
+      newState.filterString = e.target.value.toLowerCase()
+
+      this.setState({filterString: newState.filterString})
+  }
 
       render() {
+
+        const addToCart = (book)=> {
+          this.setState(
+          {
+            ...this.state,
+            cart: [...this.state.cart, book]
+          })
+        }
+
+        const cartTotal = () => {
+          return this.state.cart.reduce((accum, item) =>  {
+            return accum += item.price
+          },0)
+        }
+
+        const newState = this.state.books.filter(book => book.inCart === true)
+
           return (
               <div>
-                <Header />
+              <div>
+                <Header
+                handleSearch={this.handleSearch}
+                />
+              </div>
                   <div className="container bg-light">
                     <div className="row">
                       <div className="col-8">
                         <BookList
                           books={this.state.books}
-                          addToCart={this.addToCart}
+                          addToCart={addToCart}
                         />
                       </div>
                       <div className="col-4">
                         <Cart
                           cart={this.state.cart}
-                          removeFromCart={this.removeFromCart}
+                          cartTotal={cartTotal}
                         />
                       </div>
                   </div>

@@ -1,18 +1,17 @@
 import React from 'react';
 
 
-const CartItem = (props) => {
+const CartItem = ({item}) => {
+
   return (
-    <div className = "list-group-item" >
-      <div className = "row">
-        <div className = "col-md-6" >
-        <div className = "col-md-2" >
-        <div className = "col-md-2 mx-auto align-middle">
-        </div>
-        </div>
+    <div className="row">
+      <div className="col-md-8">
+      {item.title}
+      </div>
+      <div className="col-md-2">
+      ${item.price}.00
       </div>
     </div>
-  </div>
   )
 }
 

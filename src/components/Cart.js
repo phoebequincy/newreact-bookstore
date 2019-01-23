@@ -2,9 +2,13 @@ import React, { Component } from 'react';
 import CartItem from './CartItem';
 
 
+
 export default class Cart extends Component {
 
   render(props){
+
+    const {cart, cartTotal} = this.props
+
 
     return (
       <div>
@@ -13,11 +17,23 @@ export default class Cart extends Component {
             <div className="list-group-item">
               <h5>
                 <div className="row">
-                  <div className="col-md-8">Item</div>
-                  <div className="col-md-2">Price</div>
-                  <div className="Total mt-2">
-                      <h4>Total: $       </h4>
-                 </div>
+                  <div className="col-md-8">
+                    Item
+                  </div>
+                  <div className="col-md-2">
+                    Price
+                  </div>
+                </div>
+                 {cart.map(item => {
+                  return (
+                    <CartItem
+                      item = {item}
+                      key = {item.id}
+                    />
+                  )
+                })}
+                <div className="Total mt-2">
+                    <h4>Total: $ {cartTotal()}  </h4>
                 </div>
               </h5>
             </div>
