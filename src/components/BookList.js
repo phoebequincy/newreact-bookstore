@@ -11,14 +11,14 @@ const filterBooks = books.filter(book => book.title.toLowerCase().includes(filte
       <div>
       {filterBooks.map((book) =>
         <Book
-        key={id}
-        title={book.title}
-        subtitle={book.subtitle}
-        author={book.author}
-        description={book.description}
-        price={book.price}
-        addToCart={addToCart}
-        id={book.id}
+          key={id}
+          title={book.title}
+          subtitle={book.subtitle}
+          author={book.author}
+          description={book.description}
+          price={book.price}
+          addToCart={addToCart}
+          id={book.id}
       />)}
       </div>
     </ul>

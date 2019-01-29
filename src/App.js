@@ -67,11 +67,12 @@ class App extends Component {
         'Accept': 'application/json',
       }
     })
-
+    
     this.setState(this.state.cart = newCart)
   }
 
   render() {
+
     return (
       <div className="App container-fluid">
         <div>
